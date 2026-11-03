@@ -14,9 +14,12 @@ Branch `lineage-24.0` brings this tree up on LineageOS 24.0 for the **LTE model 
 | `device/samsung/gts7xllite` | [lelelol/android_device_samsung_gts7xllite](https://github.com/lelelol/android_device_samsung_gts7xllite) |
 | `device/samsung/sm7225-common` | [lelelol/android_device_samsung_sm7225-common](https://github.com/lelelol/android_device_samsung_sm7225-common) |
 | `kernel/samsung/sm7225` | [lelelol/android_kernel_samsung_sm7225](https://github.com/lelelol/android_kernel_samsung_sm7225) |
-| `vendor/samsung/gts7xllite` | [lelelol/android_vendor_samsung_gts7xllite](https://github.com/lelelol/android_vendor_samsung_gts7xllite) |
 | `vendor/samsung/sm7225-common` | [lelelol/android_vendor_samsung_sm7225-common](https://github.com/lelelol/android_vendor_samsung_sm7225-common) |
 | AOSP/LineageOS patches | [lelelol/lineage-24.0-gts7xllite-patches](https://github.com/lelelol/lineage-24.0-gts7xllite-patches) |
+
+All SM-T735 blobs live in the common vendor tree; `vendor/samsung/gts7xllite` is not used on
+lineage-24.0. Build instructions (local manifest, patches, `breakfast gts7xllite`) are in the
+patches repository.
 
 Android 17 dropped support for several things this 4.19-kernel, Android-11-vendor device relies on
 (BPF ring buffers, the OMX service, the VNDK linker namespace…). The patch series above holds the
