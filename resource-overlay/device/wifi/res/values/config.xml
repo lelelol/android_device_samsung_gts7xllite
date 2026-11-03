@@ -5,5 +5,5 @@
 -->
 <resources>
     <!-- Do not translate. Default access point SSID used for tethering -->
-    <string name="wifi_tether_configure_ssid_default" translatable="false">Samsung Galaxy Tab S7 FE 5G</string>
+    <string name="wifi_tether_configure_ssid_default" translatable="false">Samsung Galaxy Tab S7 FE</string>
 </resources>

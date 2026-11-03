@@ -39,7 +39,9 @@ PRODUCT_PACKAGES += \
 
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += \
-    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay
+
+PRODUCT_PACKAGES += \
     WifiResDevice
 
 # Sensors
@@ -50,9 +52,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
-# UDFPS
-$(call soong_config_set,samsungUdfpsVars,udfps_zorder,0x20000000u)
-$(call soong_config_set,surfaceflinger,udfps_lib,//hardware/samsung/fingerprint:libudfps_extension.samsung)
+# gts7xllite has no fingerprint sensor (no UDFPS)
 
 # Inherit from vendor blobs
 $(call inherit-product-if-exists, vendor/samsung/gts7xllite/gts7xllite-vendor.mk)
