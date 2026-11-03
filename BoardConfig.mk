@@ -20,6 +20,10 @@ TARGET_SCREEN_DENSITY := 320 # This density is wrong
 
 # Kernel
 TARGET_KERNEL_CONFIG += vendor/samsung/gts7xllite.config
+# PROJECT_NAME selects the Samsung techpack config (audio/display). Without it the
+# filter() chain in techpack/audio/Makefile falls back to a TAS2562 config instead of
+# lito_gts7plite (CS35L45), and the sound card waits forever for tas2562.
+TARGET_KERNEL_ADDITIONAL_FLAGS += PROJECT_NAME=gts7xllite
 
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
