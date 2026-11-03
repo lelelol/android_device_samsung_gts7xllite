@@ -4,7 +4,7 @@ aaudio.mmap_exclusive_policy=1
 ro.audio.monitorRotation=true
 
 # Bluetooth
-bluetooth.device.default_name=Galaxy Tab S7 FE 5G
+bluetooth.device.default_name=Galaxy Tab S7 FE
 
 # Fingerprint
 ro.vendor.fingerprint.type=udfps_optical

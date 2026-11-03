@@ -18,12 +18,12 @@ PRODUCT_NAME := lineage_gts7xllite
 PRODUCT_DEVICE := gts7xllite
 PRODUCT_MANUFACTURER := samsung
 PRODUCT_BRAND := samsung
-PRODUCT_MODEL := SM-T736B
+PRODUCT_MODEL := SM-T735
 PRODUCT_CHARACTERISTICS := tablet
 
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
 # Fingerprint
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BuildFingerprint="samsung/gts7xllite/qssi:14/UP1A.231005.007/T736BXXS9DYF1:user/release-keys" \
-    BuildDesc="gts7xllite-user 14 UP1A.231005.007 T736BXXS9DYF1 release-keys"
+    BuildFingerprint="samsung/gts7xllitexx/gts7xllite:14/UP1A.231005.007/T735XXS9DYF1:user/release-keys" \
+    BuildDesc="gts7xllitexx-user 14 UP1A.231005.007 T735XXS9DYF1 release-keys"
