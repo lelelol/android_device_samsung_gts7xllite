@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- LineageOS 24.0 for the Galaxy Tab S7 FE LTE (SM-T735, gts7xllite) -->
+<manifest>
+  <remote name="lelelol" fetch="https://github.com/lelelol" />
+
+  <project path="device/samsung/gts7xllite" name="android_device_samsung_gts7xllite" remote="lelelol" revision="lineage-24.0" />
+  <project path="device/samsung/sm7225-common" name="android_device_samsung_sm7225-common" remote="lelelol" revision="lineage-24.0" />
+  <project path="kernel/samsung/sm7225" name="android_kernel_samsung_sm7225" remote="lelelol" revision="lineage-24.0" />
+  <project path="vendor/samsung/sm7225-common" name="android_vendor_samsung_sm7225-common" remote="lelelol" revision="lineage-24.0" />
+  <project path="hardware/samsung" name="LineageOS/android_hardware_samsung" remote="github" revision="lineage-24.0" />
+
+  <!-- the Android 11 vendor blobs still link against VNDK v30 (packages/modules/vndk patch) -->
+  <project path="prebuilts/vndk/v30" name="platform/prebuilts/vndk/v30" remote="aosp" revision="refs/tags/android-15.0.0_r32" clone-depth="1" />
+</manifest>

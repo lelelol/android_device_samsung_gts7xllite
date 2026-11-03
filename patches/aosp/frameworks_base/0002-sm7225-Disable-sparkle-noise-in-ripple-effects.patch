@@ -1,0 +1,57 @@
+From 998dad2747e2e20723f42d008b4f67f5e6996dad Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Fri, 23 Oct 2026 09:44:51 -0300
+Subject: [PATCH 2/2] sm7225: Disable sparkle noise in ripple effects
+
+The sparkle/turbulence overlay renders as white grain on the SDE display stack.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I4c2ad0891ee8c91dfe721b3c29b53ad750517bda
+---
+ graphics/java/android/graphics/drawable/RippleDrawable.java     | 2 +-
+ .../src/com/android/systemui/biometrics/AuthRippleView.kt       | 2 +-
+ .../systemui/keyguard/ui/viewmodel/AuthRippleScrimViewModel.kt  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/graphics/java/android/graphics/drawable/RippleDrawable.java b/graphics/java/android/graphics/drawable/RippleDrawable.java
+index 641a2ae7b..19079f88c 100644
+--- a/graphics/java/android/graphics/drawable/RippleDrawable.java
++++ b/graphics/java/android/graphics/drawable/RippleDrawable.java
+@@ -156,7 +156,7 @@ public class RippleDrawable extends LayerDrawable {
+     /** The maximum number of ripples supported. */
+     private static final int MAX_RIPPLES = 10;
+     private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
+-    private static final int DEFAULT_EFFECT_COLOR = 0x8dffffff;
++    private static final int DEFAULT_EFFECT_COLOR = 0x00ffffff;
+     /** Temporary flag for teamfood. **/
+     private static final boolean FORCE_PATTERNED_STYLE = true;
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/AuthRippleView.kt b/packages/SystemUI/src/com/android/systemui/biometrics/AuthRippleView.kt
+index efbd104dc..9fc852fe7 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/AuthRippleView.kt
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/AuthRippleView.kt
+@@ -33,7 +33,7 @@ import com.android.settingslib.Utils
+ import com.android.systemui.surfaceeffects.core.dwellrippleeffect.DwellRippleShader
+ import com.android.systemui.surfaceeffects.core.ripple.RippleShader
+ 
+-private const val RIPPLE_SPARKLE_STRENGTH: Float = 0.3f
++private const val RIPPLE_SPARKLE_STRENGTH: Float = 0f
+ 
+ /**
+  * Handles two ripple effects: dwell ripple and unlocked ripple Dwell Ripple:
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/ui/viewmodel/AuthRippleScrimViewModel.kt b/packages/SystemUI/src/com/android/systemui/keyguard/ui/viewmodel/AuthRippleScrimViewModel.kt
+index 09cfcdaa6..b3ad89277 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/ui/viewmodel/AuthRippleScrimViewModel.kt
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/ui/viewmodel/AuthRippleScrimViewModel.kt
+@@ -193,7 +193,7 @@ constructor(
+             FadeParams(fadeInStart = 0f, fadeInEnd = .2f, fadeOutStart = .2f, fadeOutEnd = 1f)
+         val centerFillFadeParams =
+             FadeParams(fadeInStart = 0f, fadeInEnd = .15f, fadeOutStart = .15f, fadeOutEnd = .56f)
+-        const val RIPPLE_SPARKLE_STRENGTH: Float = 0.3f
++        const val RIPPLE_SPARKLE_STRENGTH: Float = 0f
+         const val DWELL_RADIUS_SCALE = 1.5F
+         const val TAG = "AuthRippleScrimViewModel"
+     }
+-- 
+2.53.0
+

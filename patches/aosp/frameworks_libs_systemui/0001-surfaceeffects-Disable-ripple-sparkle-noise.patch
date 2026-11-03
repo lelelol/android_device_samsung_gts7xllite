@@ -1,0 +1,29 @@
+From 6b88b351de520bb0be43c9d0611bbccc749ed7ab Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Fri, 23 Oct 2026 09:44:53 -0300
+Subject: [PATCH] surfaceeffects: Disable ripple sparkle noise
+
+Renders as white grain on the sm7225 SDE display stack (RippleShader moved here from frameworks/base).
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: Ifc389b4899473310c5abd9fe43b354ebfb09fbd0
+---
+ .../android/systemui/surfaceeffects/core/ripple/RippleShader.kt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/surfaceeffects/core/src/com/android/systemui/surfaceeffects/core/ripple/RippleShader.kt b/surfaceeffects/core/src/com/android/systemui/surfaceeffects/core/ripple/RippleShader.kt
+index 7dd363f..8565f6a 100644
+--- a/surfaceeffects/core/src/com/android/systemui/surfaceeffects/core/ripple/RippleShader.kt
++++ b/surfaceeffects/core/src/com/android/systemui/surfaceeffects/core/ripple/RippleShader.kt
+@@ -67,7 +67,7 @@ class RippleShader(rippleShape: RippleShape = RippleShape.CIRCLE) :
+ 
+         const val DEFAULT_RIPPLE_EFFECT_DURATION = 3000L
+ 
+-        const val RIPPLE_SPARKLE_STRENGTH: Float = 0.3f
++        const val RIPPLE_SPARKLE_STRENGTH: Float = 0f
+         const val RIPPLE_DEFAULT_COLOR: Int = 0xffffffff.toInt()
+         const val RIPPLE_DEFAULT_ALPHA: Int = 115 // full opacity is 255.
+ 
+-- 
+2.53.0
+

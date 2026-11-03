@@ -1,0 +1,50 @@
+From 2c0207a62bb4280b148c68e6c5dd4664aec33b3b Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Wed, 21 Oct 2026 22:36:48 -0300
+Subject: [PATCH 1/5] NetBpfLoad: Warn instead of failing on legacy 4.19
+ kernels
+
+Keep the 4.19 minimum; the 25Q2/25Q4/26Q4 gates only log, so the pre-5.10 paths
+(sanitizeBtf, no BPF_F_MMAPABLE) run with the real kernel version.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I4a0b9ab511a516ba53b61954e51b84bf56e61f24
+---
+ bpf/loader/NetBpfLoad.cpp | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/bpf/loader/NetBpfLoad.cpp b/bpf/loader/NetBpfLoad.cpp
+index 7ba3247..86ab796 100644
+--- a/bpf/loader/NetBpfLoad.cpp
++++ b/bpf/loader/NetBpfLoad.cpp
+@@ -1569,21 +1569,21 @@ static int doLoad(char** argv, char * const envp[]) {
+     // 25Q2 bumps the kernel requirement up to 5.4
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel54
+     if (isAtLeast25Q2 && !isAtLeastKernelVersion(5, 4)) {
+-        ALOGE("Android 25Q2 requires kernel 5.4.");
+-        return 6;
++        ALOGW("Android 25Q2 requires kernel 5.4.");
++        // legacy 4.19 devices: pre-5.10 code paths below still apply
+     }
+ 
+     // 25Q4 bumps the kernel requirement up to 5.10
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel510
+     if (isAtLeast25Q4 && !isAtLeastKernelVersion(5, 10)) {
+-        ALOGE("Android 25Q4 requires kernel 5.10.");
+-        return 7;
++        ALOGW("Android 25Q4 requires kernel 5.10.");
++        // legacy 4.19 devices: pre-5.10 code paths below still apply
+     }
+ 
+     // 26Q4 bumps the kernel requirement up to 5.15
+     if (isAtLeast26Q4 && !isAtLeastKernelVersion(5, 15)) {
+-        ALOGE("Android 26Q4 requires kernel 5.15.");
+-        return 7;
++        ALOGW("Android 26Q4 requires kernel 5.15.");
++        // legacy 4.19 devices: pre-5.10 code paths below still apply
+     }
+ 
+     // Technically already required by U, but only enforce on V+
+-- 
+2.53.0
+

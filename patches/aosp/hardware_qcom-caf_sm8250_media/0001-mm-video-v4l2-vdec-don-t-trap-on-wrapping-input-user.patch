@@ -1,0 +1,44 @@
+From 917b5d8baaceceae650183abc725df589143ffc1 Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Thu, 29 Oct 2026 20:41:06 -0300
+Subject: [PATCH] mm-video-v4l2: vdec: don't trap on wrapping input userptr
+
+empty_this_buffer_proxy() passes bufferaddr - offset as the V4L2 USERPTR
+of the input plane. With a nonzero offset into a small mapping the
+subtraction wraps, and the sanitized build turns the unsigned overflow
+into a ubsan trap (SIGABRT sub-overflow in the OMX service as soon as
+an app starts H.264 playback).
+
+The driver only uses userptr as a cookie (the fd and data offset go in
+plane.reserved), so compute it with __builtin_sub_overflow and let it
+wrap, logging the case for debugging.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I206fb08c2c33b3de1414726022987ec4c53c82fe
+---
+ mm-video-v4l2/vidc/vdec/src/omx_vdec_v4l2.cpp | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/mm-video-v4l2/vidc/vdec/src/omx_vdec_v4l2.cpp b/mm-video-v4l2/vidc/vdec/src/omx_vdec_v4l2.cpp
+index 1d92ee7..d0024a9 100644
+--- a/mm-video-v4l2/vidc/vdec/src/omx_vdec_v4l2.cpp
++++ b/mm-video-v4l2/vidc/vdec/src/omx_vdec_v4l2.cpp
+@@ -5236,8 +5236,13 @@ OMX_ERRORTYPE  omx_vdec::empty_this_buffer_proxy(OMX_IN OMX_HANDLETYPE  hComp,
+     buf.memory = V4L2_MEMORY_USERPTR;
+     plane.bytesused = temp_buffer->buffer_len;
+     plane.length = drv_ctx.ip_buf.buffer_size;
+-    plane.m.userptr = (unsigned long)temp_buffer->bufferaddr -
+-        (unsigned long)temp_buffer->offset;
++    if ((unsigned long)temp_buffer->offset > (unsigned long)temp_buffer->bufferaddr)
++        DEBUG_PRINT_ERROR("ETB idx %u: offset 0x%lx > bufferaddr %p (fd %d len %u)", nPortIndex,
++                (unsigned long)temp_buffer->offset, temp_buffer->bufferaddr,
++                temp_buffer->pmem_fd, (unsigned)temp_buffer->buffer_len);
++    // userptr is only a cookie for the driver: let it wrap instead of tripping the ubsan trap
++    __builtin_sub_overflow((unsigned long)temp_buffer->bufferaddr,
++            (unsigned long)temp_buffer->offset, &plane.m.userptr);
+     plane.reserved[MSM_VIDC_BUFFER_FD] = temp_buffer->pmem_fd;
+     plane.reserved[MSM_VIDC_DATA_OFFSET] = temp_buffer->offset;
+     plane.reserved[MSM_VIDC_INPUT_TAG_1] = (unsigned long)buffer->pMarkData;
+-- 
+2.53.0
+

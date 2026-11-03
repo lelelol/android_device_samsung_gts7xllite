@@ -1,0 +1,35 @@
+From a12efde57e1a3465ff39ecf2c99f5112918f63b6 Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Thu, 29 Oct 2026 20:11:35 -0300
+Subject: [PATCH] zygote_next: skip capabilities the kernel does not know
+
+cap_last_cap is 37 on 4.19 kernels, but libcap knows up to CAP_CHECKPOINT_RESTORE (40). cap_get_bound(38) returns EINVAL, the expect() panics and every app zygote child aborts silently (stderr is /dev/null). system_server then spins in waitForConnectionToNativeZygote for 60 s holding the process start lock, so no app can launch. Skip EINVAL like the Java zygote (DropCapabilitiesBoundingSet stops at the first unknown cap).
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I827f97743032bfe8173dd9674f20016afb80de70
+---
+ zygote/src/child_process.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/zygote/src/child_process.rs b/zygote/src/child_process.rs
+index f6ec741..005dec9 100644
+--- a/zygote/src/child_process.rs
++++ b/zygote/src/child_process.rs
+@@ -83,8 +83,12 @@ pub(crate) fn re_initialize(
+     if let Some(cap_bound) = spawn_params.cap_bound {
+         for flag in cap_bound.complement().iter() {
+             let cap = Capability::try_from(flag.bits().trailing_zeros()).unwrap();
+-            if cap::cap_within_bound(cap).expect("Failed to check capability bound") {
+-                cap::cap_drop_bound(cap).expect("Failed to drop capability bound");
++            match cap::cap_within_bound(cap) {
++                Ok(true) => cap::cap_drop_bound(cap).expect("Failed to drop capability bound"),
++                Ok(false) => {}
++                // Kernel older than libcap (4.19 stops at CAP_AUDIT_READ): nothing to drop.
++                Err(cap::CapabilityError::GetCapBoundFailure(e)) if e as i32 == libc::EINVAL => {}
++                Err(e) => panic!("Failed to check capability bound: {e}"),
+             }
+         }
+     }
+-- 
+2.53.0
+

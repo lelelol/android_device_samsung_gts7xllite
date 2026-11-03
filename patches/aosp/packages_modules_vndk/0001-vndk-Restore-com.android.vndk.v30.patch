@@ -1,0 +1,31 @@
+From b4c3dee56c3d1ac187f38d1ce699c99c5ccd48d0 Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Tue, 20 Oct 2026 14:59:33 -0300
+Subject: [PATCH] vndk: Restore com.android.vndk.v30
+
+SM-T735 ships an Android 11 (VNDK 30) vendor. Needs prebuilts/vndk/v30.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: Iad3e7c7c75c1b890b95e506daf557c0d7db9a353
+---
+ apex/Android.bp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/apex/Android.bp b/apex/Android.bp
+index baf8d19..8f194df 100644
+--- a/apex/Android.bp
++++ b/apex/Android.bp
+@@ -63,3 +63,10 @@ apex_vndk {
+     vndk_version: "31",
+     system_ext_specific: true,
+ }
++
++apex_vndk {
++    name: "com.android.vndk.v30",
++    defaults: ["vndk-apex-defaults"],
++    vndk_version: "30",
++    system_ext_specific: true,
++}
+-- 
+2.53.0
+

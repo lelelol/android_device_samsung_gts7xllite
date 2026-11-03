@@ -1,0 +1,31 @@
+From e2dfd5527e426669d5ca3fb0307b5347f259b924 Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Fri, 23 Oct 2026 17:40:05 -0300
+Subject: [PATCH 5/5] ConnectivityService: Skip loopback event poller without
+ BPF ring buffers
+
+LoopbackEventHandler opens a BPF ring buffer the same way as LocalNetEventHandler
+and aborts system_server on legacy 4.19 kernels.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I7b9dae9ac0cec8a0fbf34671a4be4400cb6290be
+---
+ service/src/com/android/server/ConnectivityService.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/service/src/com/android/server/ConnectivityService.java b/service/src/com/android/server/ConnectivityService.java
+index 8ba5342..c490e75 100644
+--- a/service/src/com/android/server/ConnectivityService.java
++++ b/service/src/com/android/server/ConnectivityService.java
+@@ -5095,7 +5095,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
+             mSatisfiedByLocalNetworkMetrics.start();
+         }
+ 
+-        if (mBpfNetMaps.isLoopbackAccessMetricsEnabled()) {
++        if (mBpfNetMaps.isLoopbackAccessMetricsEnabled() && kernelSupportsBpfRingbuf()) {
+             BpfEventPoller.nativeInitLoopbackEventConsumer();
+         }
+ 
+-- 
+2.53.0
+

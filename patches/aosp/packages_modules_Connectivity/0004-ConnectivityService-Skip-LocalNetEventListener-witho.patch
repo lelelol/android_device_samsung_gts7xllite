@@ -1,0 +1,53 @@
+From 8ace1f9b79a4485c11f9f69b224dc11912cf218e Mon Sep 17 00:00:00 2001
+From: Leandro <academy@mindsofthefuture.com.br>
+Date: Fri, 23 Oct 2026 17:39:29 -0300
+Subject: [PATCH 4/5] ConnectivityService: Skip LocalNetEventListener without
+ BPF ring buffers
+
+The local network access events use a BPF ring buffer (Linux 5.8+). On legacy
+4.19 kernels the map is never created and LocalNetEventHandler::GetRingbuf()
+aborts, taking system_server down in a loop. The listener is already optional
+(null before B), so only create it when the kernel supports ring buffers.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Change-Id: I8279d37a88f209d076aaba135a453aa51f663bbc
+---
+ .../com/android/server/ConnectivityService.java   | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/service/src/com/android/server/ConnectivityService.java b/service/src/com/android/server/ConnectivityService.java
+index 7682d50..8ba5342 100644
+--- a/service/src/com/android/server/ConnectivityService.java
++++ b/service/src/com/android/server/ConnectivityService.java
+@@ -990,6 +990,19 @@ public class ConnectivityService extends IConnectivityManager.Stub
+     protected INetd mNetd;
+     private DscpPolicyTracker mDscpPolicyTracker = null;
+     private final LocalNetEventListener mLocalNetEventListener;
++
++    // The local network access events come through a BPF ring buffer, which needs Linux 5.8+.
++    // On older (legacy 4.19) kernels NetBpfLoad skips that map and opening it aborts system_server.
++    private static boolean kernelSupportsBpfRingbuf() {
++        final String[] v = Os.uname().release.split("[.-]");
++        try {
++            final int major = Integer.parseInt(v[0]);
++            final int minor = v.length > 1 ? Integer.parseInt(v[1]) : 0;
++            return major > 5 || (major == 5 && minor >= 8);
++        } catch (NumberFormatException e) {
++            return true;
++        }
++    }
+     private final NetworkStatsManager mStatsManager;
+     private final NetworkPolicyManager mPolicyManager;
+     private final BpfNetMaps mBpfNetMaps;
+@@ -2655,7 +2668,7 @@ public class ConnectivityService extends IConnectivityManager.Stub
+                 ? mDeps.makeMultiProxyTracker(mContext, mHandler)
+                 : mDeps.makeProxyTracker(mContext, mHandler);
+ 
+-        if (mDeps.isAtLeastB()) {
++        if (mDeps.isAtLeastB() && kernelSupportsBpfRingbuf()) {
+             mLocalNetEventListener = mDeps.getLocalNetEventListener(
+                     mContext,
+                     mHandler.getLooper(),
+-- 
+2.53.0
+
