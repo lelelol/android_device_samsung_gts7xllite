@@ -721,4 +721,6 @@
          Disabled: meaningless without doze/AOD. -->
     <bool name="config_enableBurnInProtection">false</bool>
 
+    <!-- Book cover hall sensor (reported as SW_LID by the kernel): closing it turns the screen off -->
+    <bool name="config_lidControlsSleep">true</bool>
 </resources>
