@@ -19,7 +19,7 @@ DEVICE_PATH := device/samsung/gts7xllite
 TARGET_SCREEN_DENSITY := 320 # This density is wrong
 
 # Kernel
-TARGET_KERNEL_CONFIG += vendor/samsung/gts7xllite_defconfig
+TARGET_KERNEL_CONFIG += vendor/samsung/gts7xllite.config
 
 # Properties
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
@@ -32,3 +32,6 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
 # VINTF
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/manifest.xml
+
+# Board name (from SM-T735 stock boot.img header)
+BOARD_NAME := SRPUB23B009
