@@ -3,53 +3,32 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Partitions
+BOARD_BOOTIMAGE_PARTITION_SIZE := 71303168
+BOARD_CACHEIMAGE_PARTITION_SIZE := 629145600
+BOARD_DTBOIMG_PARTITION_SIZE := 10485760
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 86888448
+BOARD_SUPER_PARTITION_SIZE := 10171187200
+
 # Inherit from sm7225-commmon
 include device/samsung/sm7225-common/BoardConfigCommon.mk
 
 DEVICE_PATH := device/samsung/gts7xllite
 
-# Kernel: built from source (kernel/samsung/sm7225).
-# Rollback to stock binaries would need TARGET_PREBUILT_KERNEL/
-# TARGET_FORCE_PREBUILT_KERNEL + BOARD_PREBUILT_DTBIMAGE_DIR/
-# BOARD_PREBUILT_DTBOIMAGE and the files re-added under $(DEVICE_PATH)/prebuilt/.
-BOARD_KERNEL_SEPARATED_DTBO := true
-BOARD_DTBO_CFG              := $(DEVICE_PATH)/dtboimg.cfg
-
-# Kernel modules (list from stock vendor/lib/modules/modules.load)
-BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/modules.load))
-BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/modules.load.recovery))
-RECOVERY_KERNEL_MODULES := $(BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD)
-
-BOARD_NAME := SRPUA05O009
-
 # Display
-TARGET_SCREEN_DENSITY := 340
+TARGET_SCREEN_DENSITY := 320 # This density is wrong
 
-# OTA assert
-TARGET_OTA_ASSERT_DEVICE := gts7xllite
+# Kernel
+TARGET_KERNEL_CONFIG += vendor/samsung/gts7xllite_defconfig
+
+# Properties
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
-TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
-TARGET_RECOVERY_DEFAULT_ROTATION := ROTATION_RIGHT
 TARGET_RECOVERY_DEFAULT_TOUCH_ROTATION := ROTATION_RIGHT
 
 # SELinux
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
-# Security patch (from stock vendor/build.prop)
-VENDOR_SECURITY_PATCH := 2025-06-01
-
-# Properties
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
-
 # VINTF
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/manifest.xml
-
-
-# Private AVB signing (local only; falls back to test keys otherwise)
-ifneq ($(wildcard vendor/lineage-priv/keys/avb.pem),)
-BOARD_AVB_KEY_PATH := vendor/lineage-priv/keys/avb.pem
-BOARD_AVB_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_RECOVERY_KEY_PATH := vendor/lineage-priv/keys/avb_recovery.pem
-BOARD_AVB_SYSTEM_KEY_PATH := vendor/lineage-priv/keys/avb_system.pem
-endif

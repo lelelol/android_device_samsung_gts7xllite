@@ -8,18 +8,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 TARGET_SUPPORTS_OMX_SERVICE := false
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
-# Device has cellular: Dialer, ImsServiceEntitlement and the
-# telephony preload config come from the telephony product package.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/telephony_product.mk)
-
 # Inherit from gts7xllite device
 $(call inherit-product, device/samsung/gts7xllite/device.mk)
 
 # Inherit some common Lineage stuff.
 $(call inherit-product, vendor/lineage/config/common_full_tablet.mk)
-
-# APEXes unkomprimiert (capex braucht /data/apex/decompressed beim ersten Boot)
-PRODUCT_COMPRESSED_APEX := false
 
 PRODUCT_NAME := lineage_gts7xllite
 PRODUCT_DEVICE := gts7xllite
@@ -30,8 +23,7 @@ PRODUCT_CHARACTERISTICS := tablet
 
 PRODUCT_GMS_CLIENTID_BASE := android-samsung
 
-# Fingerprint (Stock T736BXXS9DYF1)
+# Fingerprint
 PRODUCT_BUILD_PROP_OVERRIDES += \
-    BuildFingerprint="samsung/gts7xllitexeea/gts7xllite:14/UP1A.231005.007/T736BXXS9DYF1:user/release-keys" \
-    BuildDesc="gts7xllitexeea-user 14 UP1A.231005.007 T736BXXS9DYF1 release-keys"
-
+    BuildFingerprint="samsung/gts7xllite/qssi:14/UP1A.231005.007/T736BXXS9DYF1:user/release-keys" \
+    BuildDesc="gts7xllite-user 14 UP1A.231005.007 T736BXXS9DYF1 release-keys"
