@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="updater_server_url" translatable="false">https://raw.githubusercontent.com/lelelol/android_device_samsung_gts7xllite/lineage-24.0/ota/{device}.json</string>
+</resources>
