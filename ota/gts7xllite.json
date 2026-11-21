@@ -1,14 +1,14 @@
 [
   {
-    "datetime": 1795224026,
+    "datetime": 1795209731,
     "files": [
       {
-        "filename": "lineage-24.0-20261121-UNOFFICIAL-gts7xllite.zip",
-        "os_patch_level": "2026-11-01",
+        "filename": "lineage-24.0-20261120-UNOFFICIAL-gts7xllite.zip",
+        "os_patch_level": "2026-10-01",
         "os_sdk_level": 37,
-        "sha256": "867171a015d2c439d02b4b794ac672c112a05ea98ced592725d11435ba876308",
-        "size": 1646503403,
-        "url": "https://github.com/lelelol/android_device_samsung_gts7xllite/releases/download/lineage-24.0-20261121/lineage-24.0-20261121-UNOFFICIAL-gts7xllite.zip"
+        "sha256": "2f34c1438252964fe76fe5b50853613a41c5d24c2379789e1dcc8ac0ab17b9a5",
+        "size": 1652862221,
+        "url": "https://github.com/lelelol/android_device_samsung_gts7xllite/releases/download/lineage-24.0-20261120/lineage-24.0-20261120-UNOFFICIAL-gts7xllite.zip"
       }
     ],
     "type": "UNOFFICIAL",
