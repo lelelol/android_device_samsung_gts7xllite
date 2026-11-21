@@ -16,6 +16,7 @@ Branch `lineage-24.0` brings this tree up on LineageOS 24.0 for the **LTE model 
 | `kernel/samsung/sm7225` | [lelelol/android_kernel_samsung_sm7225](https://github.com/lelelol/android_kernel_samsung_sm7225) |
 | `vendor/samsung/sm7225-common` | [lelelol/android_vendor_samsung_sm7225-common](https://github.com/lelelol/android_vendor_samsung_sm7225-common) |
 | AOSP/LineageOS patches | [`patches/`](patches) in this repository |
+| OTA update feed | [`ota/gts7xllite.json`](ota/gts7xllite.json) (LineageOS Updater, GitHub Releases) |
 
 All SM-T735 blobs live in the common vendor tree; `vendor/samsung/gts7xllite` is not used on
 lineage-24.0. Build instructions (local manifest, patches, `breakfast gts7xllite`) are in
@@ -42,7 +43,7 @@ Display  | TFT LCD, 60Hz, 12.4 inches, 2560 x 1600 pixels, 16:10 ratio
 Camera Back  | 8 MP
 Camera Front | 5 MP
 Video        | 1080p@30fps
-Sensors      | Gyroscope, Compass, Proximity Sensor, Accelerometer
+Sensors      | Gyroscope, Compass, Proximity Sensor, Acceleromete
 
 ## Credits
 - **Blitzhagen**: the original LineageOS device, kernel and vendor trees for the Tab S7 FE
